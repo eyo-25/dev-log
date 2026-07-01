@@ -6,11 +6,14 @@ import Category from "src/components/Category"
 import styled from "@emotion/styled"
 import NotionRenderer from "../components/NotionRenderer"
 import usePostQuery from "src/hooks/usePostQuery"
+import { useRouter } from "next/router"
+import { IoArrowBack } from "react-icons/io5"
 
 type Props = {}
 
 const PostDetail: React.FC<Props> = () => {
   const data = usePostQuery()
+  const router = useRouter()
 
   if (!data) return null
 
@@ -19,13 +22,19 @@ const PostDetail: React.FC<Props> = () => {
   return (
     <StyledWrapper>
       <article>
-        {category && (
-          <div css={{ marginBottom: "0.5rem" }}>
-            <Category readOnly={data.status?.[0] === "PublicOnDetail"}>
-              {category}
-            </Category>
+        <div className="post-detail-header">
+          <div>
+            {category && (
+              <Category readOnly={data.status?.[0] === "PublicOnDetail"}>
+                {category}
+              </Category>
+            )}
           </div>
-        )}
+          <button className="back-button" onClick={() => router.push("/")}>
+            <IoArrowBack />
+            Back
+          </button>
+        </div>
         {data.type[0] === "Post" && <PostHeader data={data} />}
         <div>
           <NotionRenderer recordMap={data.recordMap} />
@@ -58,5 +67,35 @@ const StyledWrapper = styled.div`
   > article {
     margin: 0 auto;
     max-width: 42rem;
+  }
+  .post-detail-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  .back-button {
+    display: inline-flex;
+    flex-shrink: 0;
+    gap: 0.375rem;
+    align-items: center;
+    border: 0;
+    padding: 0;
+    color: ${({ theme }) => theme.colors.gray10};
+    background: transparent;
+    font: inherit;
+    font-weight: 500;
+    line-height: 1.25rem;
+    cursor: pointer;
+
+    svg {
+      width: 1rem;
+      height: 1rem;
+    }
+
+    :hover {
+      color: ${({ theme }) => theme.colors.gray12};
+    }
   }
 `
