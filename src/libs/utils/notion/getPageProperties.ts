@@ -13,10 +13,9 @@ async function getPageProperties(
   const blockValue = blockEntry?.value ?? blockEntry
   const rawProperties = Object.entries(blockValue?.properties || [])
   const excludeProperties = ["date", "select", "multi_select", "person", "file"]
-  const properties: any = {}
+  const properties: any = { id }
   for (let i = 0; i < rawProperties.length; i++) {
     const [key, val]: any = rawProperties[i]
-    properties.id = id
     if (schema[key]?.type && !excludeProperties.includes(schema[key].type)) {
       properties[schema[key].name] = getTextContent(val)
     } else {
