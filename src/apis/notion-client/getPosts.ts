@@ -4,6 +4,7 @@ import { idToUuid } from "notion-utils"
 
 import getAllPageIds from "src/libs/utils/notion/getAllPageIds"
 import getPageProperties from "src/libs/utils/notion/getPageProperties"
+import { normalizeRecordMap } from "src/libs/utils/notion/normalizeRecordMap"
 import { TPosts } from "src/types"
 
 /**
@@ -22,12 +23,12 @@ export const getPosts = async () => {
 
   const api = new NotionAPI()
 
-  const response = await api.getPage(id)
+  const response = normalizeRecordMap(await api.getPage(id))
   id = idToUuid(id)
-  const collectionValue = Object.values(response.collection ?? {})[0]
-    ?.value as any
+  const collectionId = Object.keys(response.collection ?? {})[0]
+  const collectionValue = response.collection?.[collectionId]?.value as any
   const collection = collectionValue?.value ?? collectionValue
-  const block = response.block
+  let block = response.block
   const schema = collection?.schema
   const rootBlock = block[id]?.value
 
@@ -48,7 +49,35 @@ export const getPosts = async () => {
     }
 
     // Construct Data
-    const pageIds = getAllPageIds(response)
+    let pageIds = getAllPageIds(response)
+
+    if (!pageIds.length && collectionId) {
+      const collectionViewId =
+        blockValue?.view_ids?.[0] ?? Object.keys(response.collection_view ?? {})[0]
+      const collectionViewValue = response.collection_view?.[collectionViewId]
+        ?.value as any
+      const collectionView = collectionViewValue?.value ?? collectionViewValue
+
+      if (collectionViewId && collectionView) {
+        const collectionData: any = await api.getCollectionData(
+          collectionId,
+          collectionViewId,
+          collectionView
+        )
+        const collectionRecordMap = normalizeRecordMap(
+          collectionData.recordMap ?? {}
+        )
+
+        block = {
+          ...block,
+          ...(collectionRecordMap.block ?? {}),
+        }
+        pageIds =
+          collectionData.result?.reducerResults?.collection_group_results
+            ?.blockIds ?? []
+      }
+    }
+
     const data = []
     for (let i = 0; i < pageIds.length; i++) {
       const id = pageIds[i]

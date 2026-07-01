@@ -61,13 +61,19 @@ async function getPageProperties(
               const res: any = await api.getUsers(userId)
               const resValue =
                 res?.recordMapWithRoles?.notion_user?.[userId[1]]?.value
+              if (!resValue) continue
+
+              const name =
+                resValue.name ||
+                [resValue.family_name, resValue.given_name]
+                  .filter(Boolean)
+                  .join("")
+              if (!resValue.id || !name) continue
+
               const user = {
-                id: resValue?.id,
-                name:
-                  resValue?.name ||
-                  `${resValue?.family_name}${resValue?.given_name}` ||
-                  undefined,
-                profile_photo: resValue?.profile_photo || null,
+                id: resValue.id,
+                name,
+                profile_photo: resValue.profile_photo || null,
               }
               users.push(user)
             }
