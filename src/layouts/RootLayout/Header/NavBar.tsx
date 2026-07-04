@@ -1,17 +1,31 @@
 import styled from "@emotion/styled"
 import Link from "next/link"
+import { useRouter } from "next/router"
+
+const menuItems = ["Profile", "Posts", "Portfolio", "Study"]
 
 const NavBar: React.FC = () => {
-  const links = [{ id: 1, name: "About", to: "/about" }]
+  const router = useRouter()
+  const isPostActive = router.pathname === "/Post" || router.pathname === "/Post/[slug]"
+
   return (
-    <StyledWrapper className="">
-      <ul>
-        {links.map((link) => (
-          <li key={link.id}>
-            <Link href={link.to}>{link.name}</Link>
-          </li>
-        ))}
-      </ul>
+    <StyledWrapper>
+      {menuItems.map((menu) =>
+        menu === "Posts" ? (
+          <Link
+            key={menu}
+            href="/Post"
+            className="nav-item"
+            data-active={isPostActive}
+          >
+            {menu}
+          </Link>
+        ) : (
+          <button key={menu} type="button" className="nav-item" disabled>
+            {menu}
+          </button>
+        )
+      )}
     </StyledWrapper>
   )
 }
@@ -19,24 +33,88 @@ const NavBar: React.FC = () => {
 export default NavBar
 
 const StyledWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 100%;
   flex-shrink: 0;
-  ul {
+
+  .nav-item {
+    position: relative;
+
     display: flex;
-    flex-direction: row;
     align-items: center;
-    li {
-      display: block;
-      margin-left: 1.25rem;
-      color: ${({ theme }) => theme.colors.gray11};
 
-      a {
-        font-size: 12px;
-        line-height: 1;
+    height: 100%;
+    padding: 0 12px;
 
-        :hover {
-          color: ${({ theme }) => theme.colors.gray12};
-        }
-      }
+    border: 0;
+    background: transparent;
+
+    color: ${({ theme }) =>
+      theme.scheme === "light" ? theme.colors.gray9 : theme.colors.gray10};
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1;
+
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+
+  .nav-item[data-active="true"] {
+    color: ${({ theme }) =>
+      theme.scheme === "light" ? theme.colors.gray10 : theme.colors.gray12};
+  }
+
+  .nav-item[data-active="true"]::after {
+    content: "";
+    position: absolute;
+
+    left: 8px;
+    right: 8px;
+    bottom: 0;
+
+    height: 1px;
+    background: ${({ theme }) =>
+      theme.scheme === "light" ? theme.colors.gray10 : theme.colors.gray12};
+  }
+
+  .nav-item:not(:disabled):hover {
+    color: ${({ theme }) =>
+      theme.scheme === "light" ? theme.colors.gray10 : theme.colors.gray12};
+  }
+
+  .nav-item:disabled {
+    cursor: default;
+  }
+
+  .menu-button {
+    width: 38px;
+    height: 48px;
+    margin-left: 2px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+
+    border: 0;
+    background: transparent;
+
+    cursor: default;
+  }
+
+  .menu-button span {
+    width: 27px;
+    height: 2px;
+    background: ${({ theme }) =>
+      theme.scheme === "light" ? theme.colors.gray9 : theme.colors.gray10};
+  }
+
+  @media (max-width: 767px) {
+    .nav-item {
+      display: none;
     }
   }
 `

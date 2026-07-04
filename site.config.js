@@ -1,7 +1,7 @@
 const CONFIG = {
   // profile setting (required)
   profile: {
-    name: "A-YO",
+    name: "A-Yo!",
     image: "/avatar.png",
     role: "Frontend Developer",
     bio: "사용자 경험과 최적화를 항상 생각하며, 근거 있는 설계와 일관된 디자인 시스템으로 제품의 완성도를 높입니다.",

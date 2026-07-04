@@ -12,7 +12,7 @@ type Props = {
 
 const PostCard: React.FC<Props> = ({ data }) => {
   return (
-    <StyledWrapper href={`/${data.slug}`}>
+    <StyledWrapper href={`/Post/${data.slug}`}>
       <article>
         {data.thumbnail && (
           <div className="thumbnail">

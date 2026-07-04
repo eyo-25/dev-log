@@ -38,7 +38,7 @@ const StyledWrapper = styled.div`
   }
   > .content {
     margin-bottom: 2.25rem;
-    border-radius: 1rem;
+    border-radius: 0.5rem;
     width: 100%;
     background-color: ${({ theme }) =>
       theme.scheme === "light" ? "white" : theme.colors.gray4};
@@ -65,7 +65,6 @@ const StyledWrapper = styled.div`
       .name {
         font-size: 1.25rem;
         line-height: 1.75rem;
-        font-style: italic;
         font-weight: 700;
       }
       .role {

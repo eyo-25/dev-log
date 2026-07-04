@@ -13,9 +13,9 @@ const Header: React.FC<Props> = ({ fullWidth }) => {
     <StyledWrapper>
       <div data-full-width={fullWidth} className="container">
         <Logo />
-        <div className="nav">
-          <ThemeToggle />
+        <div className="actions">
           <NavBar />
+          <ThemeToggle />
         </div>
       </div>
     </StyledWrapper>
@@ -28,28 +28,25 @@ const StyledWrapper = styled.div`
   z-index: ${zIndexes.header};
   position: sticky;
   top: 0;
-  border-bottom: 1px solid
-    ${({ theme }) =>
-      theme.scheme === "light" ? "rgba(0, 0, 0, 0.08)" : theme.colors.gray5};
+  width: 100%;
   background-color: ${({ theme }) =>
-    theme.scheme === "light" ? "rgba(255, 255, 255, 0.72)" : "rgba(22, 22, 23, 0.72)"};
+    theme.scheme === "light"
+      ? "rgba(255, 255, 255, 0.58)"
+      : "rgba(22, 22, 23, 0.58)"};
   backdrop-filter: saturate(180%) blur(20px);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
 
   .container {
     display: flex;
-    padding-left: 16px;
-    padding-right: 16px;
     justify-content: space-between;
     align-items: center;
+
     width: 100%;
     max-width: 1200px;
-    height: 44px;
+    height: 48px;
     margin: 0 auto;
-    color: ${({ theme }) => theme.colors.gray12};
-    font-size: 12px;
-    font-weight: 400;
-    line-height: 1;
+    padding: 0 12px 0 20px;
+    box-sizing: border-box;
 
     &[data-full-width="true"] {
       @media (min-width: 768px) {
@@ -58,10 +55,11 @@ const StyledWrapper = styled.div`
       }
     }
 
-    .nav {
+    .actions {
       display: flex;
-      gap: 0.75rem;
       align-items: center;
+      gap: 8px;
+      height: 100%;
     }
   }
 `
