@@ -54,6 +54,8 @@ const PostHeader: React.FC<Props> = ({ data }) => {
                 src={data.thumbnail}
                 css={{ objectFit: "cover" }}
                 fill
+                sizes="(min-width: 1024px) 672px, calc(100vw - 3rem)"
+                priority
                 alt={data.title}
               />
             </div>
@@ -116,14 +118,10 @@ const StyledWrapper = styled.div`
       overflow: hidden;
       position: relative;
       margin-bottom: 1.75rem;
-      border-radius: 1.5rem;
+      border-radius: 5px;
       width: 100%;
+      aspect-ratio: 17 / 10;
       background-color: ${({ theme }) => theme.colors.gray4};
-      padding-bottom: 66%;
-
-      @media (min-width: 1024px) {
-        padding-bottom: 50%;
-      }
     }
   }
 `

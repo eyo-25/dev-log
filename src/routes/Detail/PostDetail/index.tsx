@@ -57,7 +57,7 @@ const StyledWrapper = styled.div`
   padding-right: 1.5rem;
   padding-top: 3rem;
   padding-bottom: 3rem;
-  border-radius: 1.5rem;
+  border-radius: 1.0rem;
   max-width: 56rem;
   background-color: ${({ theme }) =>
     theme.scheme === "light" ? "white" : theme.colors.gray4};
@@ -66,7 +66,7 @@ const StyledWrapper = styled.div`
   margin: 0 auto;
   > article {
     margin: 0 auto;
-    max-width: 42rem;
+    max-width: 720px;
   }
   .post-detail-header {
     display: flex;
