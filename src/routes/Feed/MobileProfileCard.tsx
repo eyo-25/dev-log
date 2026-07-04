@@ -10,7 +10,7 @@ type Props = {
 const MobileProfileCard: React.FC<Props> = () => {
   return (
     <StyledWrapper>
-      <div className="top">💻 Profile</div>
+      <div className="top">Profile</div>
       <div className="mid">
         <div className="wrapper">
           <Image
@@ -41,8 +41,13 @@ const StyledWrapper = styled.div`
   }
 
   > .top {
-    padding: 0.25rem;
+    padding: 0 0.25rem;
     margin-bottom: 0.75rem;
+    color: ${({ theme }) => theme.colors.gray11};
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1rem;
+    letter-spacing: 0;
   }
   > .mid {
     padding: 0.5rem;

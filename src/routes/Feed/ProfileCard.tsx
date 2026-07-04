@@ -2,16 +2,13 @@ import styled from "@emotion/styled"
 import Image from "next/image"
 import React from "react"
 import { CONFIG } from "site.config"
-import { Emoji } from "src/components/Emoji"
 
 type Props = {}
 
 const ProfileCard: React.FC<Props> = () => {
   return (
     <StyledWrapper>
-      <div className="title">
-        <Emoji>💻</Emoji> Profile
-      </div>
+      <div className="title">Profile</div>
       <div className="content">
         <div className="top">
           <Image src={CONFIG.profile.image} fill alt="" />
@@ -30,8 +27,14 @@ export default ProfileCard
 
 const StyledWrapper = styled.div`
   > .title {
-    padding: 0.25rem;
+    padding: 0 0.25rem;
+    margin-top: 0.5rem;
     margin-bottom: 0.75rem;
+    color: ${({ theme }) => theme.colors.gray11};
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1rem;
+    letter-spacing: 0;
   }
   > .content {
     margin-bottom: 2.25rem;

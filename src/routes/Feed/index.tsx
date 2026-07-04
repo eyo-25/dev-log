@@ -1,10 +1,8 @@
-import { useState } from "react"
-
-import SearchInput from "./SearchInput"
 import { FeedHeader } from "./FeedHeader"
 import Footer from "./Footer"
 import styled from "@emotion/styled"
-import TagList from "./TagList"
+import { useRouter } from "next/router"
+import SearchInput from "./SearchInput"
 import MobileProfileCard from "./MobileProfileCard"
 import ProfileCard from "./ProfileCard"
 import ServiceCard from "./ServiceCard"
@@ -17,26 +15,36 @@ const HEADER_HEIGHT = 73
 type Props = {}
 
 const Feed: React.FC<Props> = () => {
-  const [q, setQ] = useState("")
+  const router = useRouter()
+  const q = typeof router.query.q === "string" ? router.query.q : ""
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value
+    const nextQuery = { ...router.query }
+
+    if (value) {
+      nextQuery.q = value
+    } else {
+      delete nextQuery.q
+    }
+
+    router.replace(
+      {
+        pathname: router.pathname,
+        query: nextQuery,
+      },
+      undefined,
+      { shallow: true, scroll: false }
+    )
+  }
 
   return (
     <StyledWrapper>
-      <div
-        className="lt"
-        css={{
-          height: `calc(100vh - ${HEADER_HEIGHT}px)`,
-        }}
-      >
-        <TagList />
-      </div>
       <div className="mid">
         <MobileProfileCard />
-        <PinnedPosts q={q} />
-        <SearchInput value={q} onChange={(e) => setQ(e.target.value)} />
-        <div className="tags">
-          <TagList />
-        </div>
+        <SearchInput value={q} onChange={handleSearch} />
         <FeedHeader />
+        <PinnedPosts q={q} />
         <PostList q={q} />
         <div className="footer">
           <Footer />
@@ -73,37 +81,11 @@ const StyledWrapper = styled.div`
     padding: 0.5rem 0;
   }
 
-  > .lt {
-    display: none;
-    overflow: scroll;
-    position: sticky;
-    grid-column: span 2 / span 2;
-    top: ${HEADER_HEIGHT - 10}px;
-
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    &::-webkit-scrollbar {
-      display: none;
-    }
-
-    @media (min-width: 1024px) {
-      display: block;
-    }
-  }
-
   > .mid {
     grid-column: span 12 / span 12;
 
     @media (min-width: 1024px) {
-      grid-column: span 7 / span 7;
-    }
-
-    > .tags {
-      display: block;
-
-      @media (min-width: 1024px) {
-        display: none;
-      }
+      grid-column: span 9 / span 9;
     }
 
     > .footer {

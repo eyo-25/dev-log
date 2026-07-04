@@ -29,7 +29,7 @@ const PinnedPosts: React.FC<Props> = ({ q }) => {
       <div className="wrapper">
         <div className="header">📌 Pinned Posts</div>
       </div>
-      <div className="my-2">
+      <div className="post-grid">
         {filteredPosts.map((post) => (
           <PostCard key={post.slug} data={post} />
         ))}
@@ -42,6 +42,8 @@ export default PinnedPosts
 
 const StyledWrapper = styled.div`
   position: relative;
+  margin-bottom: 1.5rem;
+
   .wrapper {
     display: flex;
     margin-bottom: 1rem;
@@ -59,5 +61,14 @@ const StyledWrapper = styled.div`
     line-height: 1.75rem;
     font-weight: 700;
     cursor: pointer;
+  }
+
+  .post-grid {
+    display: grid;
+    gap: 1.5rem;
+
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
 `

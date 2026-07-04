@@ -4,7 +4,6 @@ import { formatDate } from "src/libs/utils"
 import Tag from "../../../components/Tag"
 import { TPost } from "../../../types"
 import Image from "next/image"
-import Category from "../../../components/Category"
 import styled from "@emotion/styled"
 
 type Props = {
@@ -12,27 +11,21 @@ type Props = {
 }
 
 const PostCard: React.FC<Props> = ({ data }) => {
-  const category = (data.category && data.category?.[0]) || undefined
-
   return (
     <StyledWrapper href={`/${data.slug}`}>
       <article>
-        {category && (
-          <div className="category">
-            <Category>{category}</Category>
-          </div>
-        )}
         {data.thumbnail && (
           <div className="thumbnail">
             <Image
               src={data.thumbnail}
               fill
               alt={data.title}
+              sizes="(min-width: 1024px) 360px, (min-width: 768px) calc((100vw - 4.5rem) / 2), calc(100vw - 3rem)"
               css={{ objectFit: "cover" }}
             />
           </div>
         )}
-        <div data-thumb={!!data.thumbnail} data-category={!!category} className="content">
+        <div data-thumb={!!data.thumbnail} className="content">
           <header className="top">
             <h2>{data.title}</h2>
           </header>
@@ -62,50 +55,53 @@ const PostCard: React.FC<Props> = ({ data }) => {
 export default PostCard
 
 const StyledWrapper = styled(Link)`
+  display: block;
+  height: 100%;
+
   article {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     overflow: hidden;
     position: relative;
-    margin-bottom: 1.5rem;
-    border-radius: 1rem;
+    border-radius: 8px;
     background-color: ${({ theme }) =>
       theme.scheme === "light" ? "white" : theme.colors.gray4};
+    box-shadow: ${({ theme }) =>
+      theme.scheme === "light"
+        ? "0 2px 8px rgba(0, 0, 0, 0.04), 0 14px 30px rgba(0, 0, 0, 0.06)"
+        : "0 2px 8px rgba(0, 0, 0, 0.18), 0 14px 30px rgba(0, 0, 0, 0.16)"};
     transition-property: box-shadow;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 300ms;
-
-    @media (min-width: 768px) {
-      margin-bottom: 2rem;
-    }
-
     :hover {
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-        0 4px 6px -2px rgba(0, 0, 0, 0.05);
-    }
-    > .category {
-      position: absolute;
-      top: 1rem;
-      left: 1rem;
-      z-index: 10;
+      box-shadow: ${({ theme }) =>
+        theme.scheme === "light"
+          ? "0 4px 12px rgba(0, 0, 0, 0.06), 0 18px 36px rgba(0, 0, 0, 0.08)"
+          : "0 4px 12px rgba(0, 0, 0, 0.22), 0 18px 36px rgba(0, 0, 0, 0.2)"};
+
+      > .content {
+        background-color: ${({ theme }) =>
+          theme.scheme === "light" ? theme.colors.gray3 : theme.colors.gray5};
+      }
     }
 
     > .thumbnail {
       position: relative;
+      border-bottom: 1px solid ${({ theme }) => theme.colors.gray5};
       width: 100%;
+      aspect-ratio: 17 / 10;
       background-color: ${({ theme }) => theme.colors.gray2};
-      padding-bottom: 66%;
-
-      @media (min-width: 1024px) {
-        padding-bottom: 50%;
-      }
     }
     > .content {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
       padding: 1rem;
+      transition: background-color 300ms cubic-bezier(0.4, 0, 0.2, 1);
 
       &[data-thumb="false"] {
-        padding-top: 3.5rem;
-      }
-      &[data-category="false"] {
-        padding-top: 1.5rem;
+        padding-top: 1rem;
       }
       > .top {
         display: flex;
@@ -118,16 +114,11 @@ const StyledWrapper = styled(Link)`
         }
         h2 {
           margin-bottom: 0.5rem;
-          font-size: 1.125rem;
+          font-size: 19px;
           line-height: 1.75rem;
-          font-weight: 500;
+          font-weight: 600;
 
           cursor: pointer;
-
-          @media (min-width: 768px) {
-            font-size: 1.25rem;
-            line-height: 1.75rem;
-          }
         }
       }
       > .date {
@@ -145,19 +136,23 @@ const StyledWrapper = styled(Link)`
         }
       }
       > .summary {
-        margin-bottom: 1rem;
+        margin: 0;
         p {
-          display: none;
-          line-height: 2rem;
+          display: -webkit-box;
+          overflow: hidden;
+          margin: 0;
+          margin-bottom: 15px;
+          min-height: 6rem;
+          max-height: 6rem;
+          line-height: 1.5rem;
           color: ${({ theme }) => theme.colors.gray11};
-
-          @media (min-width: 768px) {
-            display: block;
-          }
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 4;
         }
       }
       > .tags {
         display: flex;
+        margin-top: auto;
         gap: 0.5rem;
       }
     }
