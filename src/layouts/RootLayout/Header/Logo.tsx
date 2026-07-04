@@ -12,4 +12,13 @@ const Logo = () => {
 
 export default Logo
 
-const StyledWrapper = styled(Link)``
+const StyledWrapper = styled(Link)`
+  color: ${({ theme }) => theme.colors.gray12};
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+
+  :hover {
+    color: ${({ theme }) => theme.colors.gray11};
+  }
+`

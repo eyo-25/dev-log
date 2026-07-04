@@ -22,5 +22,13 @@ const ThemeToggle: React.FC<Props> = () => {
 export default ThemeToggle
 
 const StyledWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  color: ${({ theme }) => theme.colors.gray11};
+  line-height: 1;
   cursor: pointer;
+
+  :hover {
+    color: ${({ theme }) => theme.colors.gray12};
+  }
 `

@@ -23,10 +23,20 @@ const StyledWrapper = styled.div`
   ul {
     display: flex;
     flex-direction: row;
+    align-items: center;
     li {
       display: block;
-      margin-left: 1rem;
+      margin-left: 1.25rem;
       color: ${({ theme }) => theme.colors.gray11};
+
+      a {
+        font-size: 12px;
+        line-height: 1;
+
+        :hover {
+          color: ${({ theme }) => theme.colors.gray12};
+        }
+      }
     }
   }
 `
