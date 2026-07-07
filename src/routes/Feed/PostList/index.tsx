@@ -67,6 +67,7 @@ export default PostList
 
 const StyledWrapper = styled.div`
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 1.5rem;
 
   @media (min-width: 768px) {
